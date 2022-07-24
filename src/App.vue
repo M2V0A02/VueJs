@@ -3,8 +3,8 @@
         Vue.js
     </h1>
     <div class="buttons">
-        <button v-on:click="addLike">Увеличить лайки</button>
-        <button v-on:click="addDislike">Увеличить дизлайки</button>
+        <button @click="addLike">Увеличить лайки</button>
+        <button @click="addDislike">Увеличить дизлайки</button>
     </div>
     <div>
         Работает <span class="likes"><strong>Кол-во лайков {{ likes}} и дизлайков {{ dislikes}} </strong></span>
