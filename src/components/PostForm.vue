@@ -9,15 +9,15 @@
             placeholder="Название"
         >
         <input v-model="post.body" class="posts-form__input" type="text" name="body" placeholder="Имя">
-        <my-button-vue style="margin: 15px auto;" @click="createPost" class="posts-form__button">Создать</my-button-vue>
+        <my-button style="margin: 15px auto;" @click="createPost" class="posts-form__button">Создать</my-button>
     </form>
 </template>
 
 <script>
-import MyButtonVue from './UI/MyButton.vue';
+
 export default {
     components:{
-        MyButtonVue
+        
     },
     data() {
         return {
