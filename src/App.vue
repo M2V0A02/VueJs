@@ -9,7 +9,7 @@
 <script>
 import PostForm from "./components/PostForm";
 import PostList from "./components/PostList";
-export default {
+export default { 
     components:{
         PostList, PostForm
     },
