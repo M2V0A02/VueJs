@@ -1,14 +1,14 @@
 <template>
     <form class="posts-form" action="" @submit.prevent>
         <h4 class="posts-form__title">Создание поста</h4>
-        <input 
-            v-model="post.title"
-            class="posts-form__input"
+        <my-input
+            class="posts-form__input" 
+            v-model:value="post.title"
             type="text"
             name="title"
             placeholder="Название"
-        >
-        <input v-model="post.body" class="posts-form__input" type="text" name="body" placeholder="Имя">
+        />
+        <my-input class="posts-form__input" v-model:value="post.body"  type="text" name="body" placeholder="Имя" />
         <my-button style="margin: 15px auto;" @click="createPost" class="posts-form__button">Создать</my-button>
     </form>
 </template>
@@ -53,10 +53,7 @@ export default {
     }
 
     .posts-form__input{
-        width: 100%;
         margin: 15px auto;
-        height: 50px;
-        width: 50%;
     }
 
     
