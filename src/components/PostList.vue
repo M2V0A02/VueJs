@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <h3>Посты:</h3>
+    <div v-if="posts.length > 0">
+        <h3 style="text-align:center">Посты:</h3>
         <post-item
             v-for="post of posts"
             :key="post.id" 
@@ -8,7 +8,9 @@
             @remove="this.$emit('delete', post);"
         />  
     </div>
-    
+    <div v-else>
+        <h3 style="text-align:center">Постов нет</h3>
+    </div>
 </template>
 
 <script>
