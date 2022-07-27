@@ -1,8 +1,12 @@
 <template>
     <div>
         <h3>Посты:</h3>
-        <post-item v-for="post in posts" :post="post" />  
-        
+        <post-item
+            v-for="post of posts"
+            :key="post.id" 
+            :post="post" 
+            @remove="this.$emit('delete', post);"
+        />  
     </div>
     
 </template>
