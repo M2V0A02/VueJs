@@ -2,12 +2,15 @@
     <h1>
         Vue.js
     </h1>
-    <my-button @click="fetchPosts">Получить посты</my-button>
-    <my-button @click="showModel">Добавить пост</my-button>
+    <div class="panel">
+        <my-button @click="showModel">Добавить пост</my-button>
+        <my-select v-model="selectedSort" :options="sordOptions"></my-select>
+    </div>
+    
     <my-dialog v-model:show=dialogVisible>
         <post-form @create="createPost"/>
     </my-dialog>
-    <post-list @delete="removePost" :posts="posts" />
+    <post-list @delete="removePost" :posts="sortedPosts" />
     <div v-if="isPostLoading">Идет загрузка</div>
 </template>
 <script>
@@ -22,7 +25,12 @@ export default {
         return {
             posts: [],
             dialogVisible: false,
-            isPostLoading: true,   
+            isPostLoading: true, 
+            selectedSort: '',
+            sordOptions: [
+                {value: 'title', name: 'По названию'},
+                {value: 'body', name: 'По содержимому'}
+            ]  
         }
     },
     methods: {
@@ -49,8 +57,12 @@ export default {
     },
     mounted() {
         this.fetchPosts();
+    },
+    computed: {
+        sortedPosts() {
+            return [...this.posts].sort((post1, post2) => post1[this.selectedSort]?.localeCompare(post2[this.selectedSort]))
+        }
     }
-    
 }
 </script>
 
@@ -61,4 +73,9 @@ export default {
         box-sizing: border-box;
     }
 
+    .panel{
+        display: flex;
+        justify-content: space-between;
+        margin: 0 15px;
+    }
 </style>
