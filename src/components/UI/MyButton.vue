@@ -15,6 +15,6 @@ export default {
     .button{
         height: 50px;
         font-size: 1.5em;
-        width: 5em;
+        min-width: 5em;
     }
 </style>

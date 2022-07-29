@@ -2,7 +2,10 @@
     <h1>
         Vue.js
     </h1>
-    <post-form @create="createPost"/>
+    <my-button @click="showModel">Добавить пост</my-button>
+    <my-dialog v-model:show=dialogVisible>
+        <post-form @create="createPost"/>
+    </my-dialog>
     <post-list @delete="removePost" :posts="posts" />
     
 </template>
@@ -21,7 +24,7 @@ export default {
                 {id: 3, title: 'CSS', body: 'Описание CSS'},
                 {id: 4, title: 'DRR', body: 'Описание DRR'}
             ],
-            
+            dialogVisible: false,   
         }
         
     },
@@ -31,6 +34,9 @@ export default {
             },
             removePost(post){
                 this.posts = this.posts.filter(p => p.id !== post.id)
+            },
+            showModel(){
+                this.dialogVisible = true;
             }
         }
 }
