@@ -2,6 +2,14 @@
     <h1>
         Vue.js
     </h1>
+    <div>
+        Поиск
+        <my-input
+            :value="searchQuery"
+            @input="updateQuery"
+            placeholder = "Поиск...."
+        />
+    </div>
     <div class="panel">
         <my-button @click="showModel">Добавить пост</my-button>
         <my-select v-model="selectedSort" :options="sordOptions"></my-select>
@@ -10,7 +18,7 @@
     <my-dialog v-model:show=dialogVisible>
         <post-form @create="createPost"/>
     </my-dialog>
-    <post-list @delete="removePost" :posts="sortedPosts" />
+    <post-list @delete="removePost" :posts="sortedAndSearchedPosts" />
     <div v-if="isPostLoading">Идет загрузка</div>
 </template>
 <script>
@@ -27,6 +35,7 @@ export default {
             dialogVisible: false,
             isPostLoading: true, 
             selectedSort: '',
+            searchQuery: '',
             sordOptions: [
                 {value: 'title', name: 'По названию'},
                 {value: 'body', name: 'По содержимому'}
@@ -34,6 +43,9 @@ export default {
         }
     },
     methods: {
+        updateQuery(event){
+            this.searchQuery = event.target.value;
+        },
         createPost(post){
             this.posts.push(post);
         },
@@ -61,6 +73,9 @@ export default {
     computed: {
         sortedPosts() {
             return [...this.posts].sort((post1, post2) => post1[this.selectedSort]?.localeCompare(post2[this.selectedSort]))
+        },
+        sortedAndSearchedPosts() {
+            return this.sortedPosts.filter(post => post.title.includes(this.searchQuery))
         }
     }
 }

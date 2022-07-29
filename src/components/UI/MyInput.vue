@@ -6,7 +6,8 @@
 export default {
     name: "my-input",
     props: {
-        value: {String, Number}
+        value: {String, Number},
+        default: ''
     },
     methods: {
         UpdateInput(event){
