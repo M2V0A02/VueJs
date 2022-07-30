@@ -20,14 +20,21 @@
     </my-dialog>
     <post-list @delete="removePost" :posts="sortedAndSearchedPosts" />
     <div v-if="isPostLoading">Идет загрузка</div>
+    <div class="page__wrapper">
+        <pagination style="margin:0 auto" :totalPages="totalPages" v-model:currentPage="pageNumber"></pagination>
+    </div>
+    
 </template>
 <script>
 import PostForm from "./components/PostForm";
 import PostList from "./components/PostList";
+import Pagination from "@/components/Pagination";
 import axios from 'axios';
 export default { 
     components:{
-        PostList, PostForm
+        PostList,
+        PostForm,
+        Pagination
     },
     data() {
         return {
@@ -35,6 +42,9 @@ export default {
             dialogVisible: false,
             isPostLoading: true, 
             selectedSort: '',
+            limit: 10,
+            pageNumber: 1,
+            totalPages: 0,
             searchQuery: '',
             sordOptions: [
                 {value: 'title', name: 'По названию'},
@@ -57,7 +67,13 @@ export default {
         },
         async fetchPosts() {
             try {
-                const response = await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=10');
+                const response = await axios.get('https://jsonplaceholder.typicode.com/posts', {
+                    params: {
+                        _limit: this.limit,
+                        _page: this.pageNumber 
+                    }
+                });
+                this.totalPages = Math.ceil(response.headers['x-total-count'] / this.limit)
                 this.posts = response.data;
                 this.isPostLoading = false;
             } catch(e) {
@@ -77,6 +93,11 @@ export default {
         sortedAndSearchedPosts() {
             return this.sortedPosts.filter(post => post.title.includes(this.searchQuery))
         }
+    },
+    watch: {
+        pageNumber() {
+            this.fetchPosts();
+        }
     }
 }
 </script>
@@ -93,4 +114,10 @@ export default {
         justify-content: space-between;
         margin: 0 15px;
     }
+
+    .page__wrapper {
+    display: flex;
+    margin-top: 15px;
+    justify-content: center;
+}
 </style>
