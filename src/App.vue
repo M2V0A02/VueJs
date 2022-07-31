@@ -20,10 +20,10 @@
     </my-dialog>
     <post-list @delete="removePost" :posts="sortedAndSearchedPosts" />
     <div v-if="isPostLoading">Идет загрузка</div>
-    <div class="page__wrapper">
+    <!-- <div class="page__wrapper">
         <pagination style="margin:0 auto" :totalPages="totalPages" v-model:currentPage="pageNumber"></pagination>
-    </div>
-    
+    </div> -->
+    <div ref="observer"></div>
 </template>
 <script>
 import PostForm from "./components/PostForm";
@@ -82,9 +82,37 @@ export default {
                 this.isPostLoading = false;
             }
         },
+        async LoadingPosts() {
+            try {
+                
+                const response = await axios.get('https://jsonplaceholder.typicode.com/posts', {
+                    params: {
+                        _limit: this.limit,
+                        _page: this.pageNumber 
+                    }
+                });
+                this.totalPages = Math.ceil(response.headers['x-total-count'] / this.limit)
+                this.posts = [...this.posts, ...response.data];
+                this.pageNumber += 1;
+            } catch(e) {
+                console.log('Ошибка')
+            } finally {
+            }
+        },
     },
     mounted() {
-        this.fetchPosts();
+        this.LoadingPosts();
+        const options = {
+            rootMargin: '0px',
+            threshold: 1.0
+        }
+        const callback = (entries, observer) => {
+            if (entries[0].isIntersecting) {
+                this.LoadingPosts();
+            }
+        };
+        const observer = new IntersectionObserver(callback, options);
+        observer.observe(this.$refs.observer);
     },
     computed: {
         sortedPosts() {
@@ -96,7 +124,7 @@ export default {
     },
     watch: {
         pageNumber() {
-            this.fetchPosts();
+            //this.fetchPosts();
         }
     }
 }
