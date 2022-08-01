@@ -23,7 +23,7 @@
     <!-- <div class="page__wrapper">
         <pagination style="margin:0 auto" :totalPages="totalPages" v-model:currentPage="pageNumber"></pagination>
     </div> -->
-    <div ref="observer"></div>
+    <div v-intersection="this.LoadingPosts" ref="observer"></div>
 </template>
 <script>
 import PostForm from "@/components/PostForm";
@@ -100,17 +100,6 @@ export default {
         },
     },
     mounted() {
-        const options = {
-            rootMargin: '0px',
-            threshold: 1.0
-        }
-        const callback = (entries, observer) => {
-            if (entries[0].isIntersecting) {
-                this.LoadingPosts();
-            }
-        };
-        const observer = new IntersectionObserver(callback, options);
-        observer.observe(this.$refs.observer);
     },
     computed: {
         sortedPosts() {
