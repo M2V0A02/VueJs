@@ -7,19 +7,11 @@
 </template>
 
 <script>
+import dialogMixin from '@/mixins/dialogMixin';
+
 export default {
     name: "my-dialog",
-    props: {
-        show: {
-            type: Boolean,
-            default: false
-        }
-    },
-    methods:{
-        closeDialog(){
-                this.$emit('update:show', false)
-            }
-    }
+    mixins: [dialogMixin]
 }
 </script>
 

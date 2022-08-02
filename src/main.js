@@ -3,6 +3,7 @@ import App from './App'
 import components from "@/components/UI/index";
 import router from "@/router/router";
 import directives from '@/directives/index';
+import store from '@/store/index';
 const app = createApp(App)
 
 for (let key in components) {
@@ -14,4 +15,4 @@ for (let key in directives) {
 }
 
 
-app.use(router).mount('#app')
+app.use(store).use(router).mount('#app')
